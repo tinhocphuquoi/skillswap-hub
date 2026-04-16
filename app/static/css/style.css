@@ -1,0 +1,18 @@
+body {
+    background: linear-gradient(135deg, #f0f4ff, #e0f0ff);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,123,255,0.2) !important;
+}
+
+.navbar-brand {
+    font-size: 1.6rem;
+    font-weight: 700;
+}

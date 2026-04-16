@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">🏆 Bảng xếp hạng Skill Master</h2>
+<table class="table table-hover">
+    <thead class="table-primary">
+        <tr>
+            <th>Hạng</th>
+            <th>Học sinh</th>
+            <th>Trường</th>
+            <th>Điểm</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for idx, user in enumerate(users) %}
+        <tr>
+            <td>{{ idx + 1 }}</td>
+            <td>{{ user.full_name or user.username }}</td>
+            <td>{{ user.school }}</td>
+            <td><strong>{{ user.points }}</strong></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

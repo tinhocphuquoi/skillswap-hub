@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">💬 Đang chat với: {{ other.full_name or other.username }}</h5>
+                <a href="{{ url_for('main.matches') }}" class="btn btn-light btn-sm">← Quay lại tìm đối tác</a>
+            </div>
+            <div id="chat-window" class="card-body" style="height: 420px; overflow-y: auto; background: #f8f9fa; padding: 15px;">
+                {% for msg in messages %}
+                <div class="mb-3">
+                    {% if msg.sender_id == current_user.id %}
+                    <div class="text-end">
+                        <span class="badge bg-primary">Bạn</span><br>
+                        <span class="d-inline-block bg-primary text-white p-2 rounded-3" style="max-width: 70%;">{{ msg.content }}</span>
+                        <small class="text-muted d-block">{{ msg.timestamp.strftime('%H:%M') }}</small>
+                    </div>
+                    {% else %}
+                    <div>
+                        <span class="badge bg-secondary">{{ other.username }}</span><br>
+                        <span class="d-inline-block bg-light p-2 rounded-3" style="max-width: 70%;">{{ msg.content }}</span>
+                        <small class="text-muted d-block">{{ msg.timestamp.strftime('%H:%M') }}</small>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="card-footer">
+                <div class="input-group">
+                    <input id="message-input" type="text" class="form-control" placeholder="Nhập tin nhắn của bạn..." autocomplete="off">
+                    <button id="send-btn" class="btn btn-primary">Gửi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
+<script>
+    const socket = io();
+    const room = `chat_${Math.min({{ current_user.id }}, {{ other.id }})}_${Math.max({{ current_user.id }}, {{ other.id }})}`;
+    
+    socket.emit('join', { room: room });
+
+    const chatWindow = document.getElementById('chat-window');
+    const input = document.getElementById('message-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    function sendMessage() {
+        const message = input.value.trim();
+        if (message !== '') {
+            socket.emit('send_message', {
+                receiver_id: {{ other.id }},
+                message: message
+            });
+            input.value = '';
+        }
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    socket.on('receive_message', function(data) {
+        const div = document.createElement('div');
+        div.className = 'mb-3';
+        if (data.sender === '{{ current_user.username }}') {
+            div.innerHTML = `
+                <div class="text-end">
+                    <span class="badge bg-primary">Bạn</span><br>
+                    <span class="d-inline-block bg-primary text-white p-2 rounded-3" style="max-width: 70%;">${data.message}</span>
+                    <small class="text-muted d-block">${data.time}</small>
+                </div>`;
+        } else {
+            div.innerHTML = `
+                <div>
+                    <span class="badge bg-secondary">${data.sender}</span><br>
+                    <span class="d-inline-block bg-light p-2 rounded-3" style="max-width: 70%;">${data.message}</span>
+                    <small class="text-muted d-block">${data.time}</small>
+                </div>`;
+        }
+        chatWindow.appendChild(div);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    });
+</script>
+{% endblock %}

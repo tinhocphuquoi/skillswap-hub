@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center text-center">
+    <div class="col-md-8">
+        <h1 class="display-4 fw-bold text-primary">SkillSwap Hub</h1>
+        <p class="lead mb-4">Nền tảng trao đổi kỹ năng dành riêng cho học sinh THPT</p>
+        <p class="fs-5">Học miễn phí • Gần nhà • Cùng bạn bè • Trao đổi kỹ năng thật sự!</p>
+        
+        <div class="my-5">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg px-5 py-3 me-3">Đăng ký ngay</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary btn-lg px-5 py-3">Đăng nhập</a>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5>🔄 Trao đổi kỹ năng</h5>
+                        <p class="text-muted">Bạn dạy gì? Bạn muốn học gì? Hệ thống tự ghép đôi!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5>💬 Chat realtime</h5>
+                        <p class="text-muted">Nói chuyện trực tiếp với đối tác ngay trên web</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5>🏆 Bảng xếp hạng</h5>
+                        <p class="text-muted">Thi đua điểm số cùng bạn bè toàn thành phố</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

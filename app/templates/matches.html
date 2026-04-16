@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">Đối tác gợi ý cho bạn</h2>
+<div class="row">
+    {% for user, score in results %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ user.full_name or user.username }}</h5>
+                <p class="text-muted">{{ user.school }} • {{ user.district }}</p>
+                <p><strong>Điểm khớp:</strong> {{ score }} kỹ năng</p>
+                <a href="{{ url_for('main.chat', user_id=user.id) }}" class="btn btn-primary w-100">Nhắn tin ngay</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% if not results %}
+    <p class="text-muted">Chưa có đối tác khớp. Hãy cập nhật profile để có nhiều gợi ý hơn!</p>
+    {% endif %}
+</div>
+{% endblock %}
