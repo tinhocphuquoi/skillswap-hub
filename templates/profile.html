@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Profile của bạn</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <!-- các field form.full_name, form.teach_skills... -->
+    <button type="submit" class="btn btn-success">Lưu thay đổi</button>
+</form>
+{% endblock %}
